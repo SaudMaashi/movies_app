@@ -37,6 +37,7 @@ dependencies:
   cupertino_icons: ^1.0.8
   google_fonts: ^6.2.1
   flutter_native_splash: ^2.4.1
+  step_progress_indicator: ^1.0.2
 flutter_native_splash:
   android: true
   ios: true
@@ -66,9 +67,11 @@ flutter:
   uses-material-design: true
 
   # To add assets to your application, add an assets section, like this:
-  # assets:
-  #   - images/a_dot_burr.jpeg
-  #   - images/a_dot_ham.jpeg
+  assets:
+    - assets/images/badboys.jpg
+    - assets/images/onepiece.jpg
+    - assets/images/spiderman.jpg
+    - assets/images/app_logo.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images

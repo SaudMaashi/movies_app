@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:movies_app/screens/splash_screen.dart';
+import 'package:movies_app/screens/onboarding/onboarding_screen.dart';
 import 'package:movies_app/utilities/constants.dart';
 
 void main() async {
@@ -19,7 +19,7 @@ class MoviesApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: const SplashScreen(),
+      home: const OnboardingScreen(),
       theme: ThemeData(
           scaffoldBackgroundColor: const Color(0xFF303030),
           primarySwatch: kPrimaryColor,
