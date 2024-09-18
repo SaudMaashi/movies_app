@@ -11,16 +11,14 @@ class OnboardingScreen extends StatelessWidget {
         controller: PageController(),
         children: const [
           OnboardingScreenWidget(
-              isButton: false,
+              isNext: false,
               step: 1,
               text:
-                  "Lets discover the\nworld of movies\n\nSwipe to the Right ..."),
+                  "Lets discover the\nworld of movies\n\nSwipe to the Right\n to continue ..."),
           OnboardingScreenWidget(
-              isButton: false,
-              step: 2,
-              text: "Create your own\nworld of movies"),
+              isNext: false, step: 2, text: "Create your own\nworld of movies"),
           OnboardingScreenWidget(
-              isButton: true, step: 3, text: "Lets get started enjoy"),
+              isNext: true, step: 3, text: "Lets get started enjoy"),
         ],
       ),
     );
