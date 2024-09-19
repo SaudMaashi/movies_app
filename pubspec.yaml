@@ -38,6 +38,7 @@ dependencies:
   google_fonts: ^6.2.1
   flutter_native_splash: ^2.4.1
   step_progress_indicator: ^1.0.2
+  carousel_slider: ^5.0.0
 flutter_native_splash:
   android: true
   ios: true
