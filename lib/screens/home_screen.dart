@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:movies_app/services/movies_service.dart';
+import 'package:movies_app/widgets/top_upcoming_movies.dart';
 import 'package:movies_app/widgets/trending_movies.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -11,18 +13,22 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        elevation: 0,
-        backgroundColor: Colors.transparent,
-        title: const Text("Welcome"),
-      ),
-      body: const Padding(
-        padding: EdgeInsets.symmetric(vertical: 25),
-        child: SingleChildScrollView(
+    return SafeArea(
+      child: Scaffold(
+        body: SingleChildScrollView(
           child: Column(
             children: [
-              TrendingMovies(),
+              const SizedBox(height: 50),
+              const TrendingMovies(),
+              const SizedBox(height: 35),
+              TopAndUpcomingMovies(
+                  future: MoviesService().getTopRatedMovies(),
+                  text: "Top Rated Movies"),
+              const SizedBox(height: 35),
+              TopAndUpcomingMovies(
+                  future: MoviesService().getUpcomingMovies(),
+                  text: "Upcoming Movies"),
+              const SizedBox(height: 30),
             ],
           ),
         ),

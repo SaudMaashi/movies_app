@@ -1,19 +1,21 @@
 import 'package:dio/dio.dart';
-import 'package:movies_app/constants/api_key.dart';
+import 'package:movies_app/constants/constants.dart';
 import 'package:movies_app/models/movies_model.dart';
 
 class MoviesService {
   final dio = Dio();
-  var moviesList = [];
+  var trendingMovies = [];
+  var topMovies = [];
+  var upcomingMovies = [];
   Future<List> getTrendingMovies() async {
     final response = await dio.get(
         "https://api.themoviedb.org/3/trending/movie/week?api_key=$apiKey");
     final json = response.data["results"];
     for (var movie in json) {
       MoviesModel moviesModel = MoviesModel.fromJson(movie);
-      moviesList.add(moviesModel);
+      trendingMovies.add(moviesModel);
     }
-    return moviesList;
+    return trendingMovies;
   }
 
   Future<List> getTopRatedMovies() async {
@@ -22,9 +24,9 @@ class MoviesService {
     final json = response.data["results"];
     for (var movie in json) {
       MoviesModel moviesModel = MoviesModel.fromJson(movie);
-      moviesList.add(moviesModel);
+      topMovies.add(moviesModel);
     }
-    return moviesList;
+    return topMovies;
   }
 
   Future<List> getUpcomingMovies() async {
@@ -33,8 +35,8 @@ class MoviesService {
     final json = response.data["results"];
     for (var movie in json) {
       MoviesModel moviesModel = MoviesModel.fromJson(movie);
-      moviesList.add(moviesModel);
+      upcomingMovies.add(moviesModel);
     }
-    return moviesList;
+    return upcomingMovies;
   }
 }

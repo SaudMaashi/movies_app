@@ -1,6 +1,7 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-import 'package:movies_app/constants/api_key.dart';
+import 'package:movies_app/constants/constants.dart';
+import 'package:movies_app/screens/details_screen.dart';
 import 'package:movies_app/services/movies_service.dart';
 
 class TrendingMovies extends StatelessWidget {
@@ -10,51 +11,94 @@ class TrendingMovies extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-      future: MoviesService().getTrendingMovies(),
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Center(child: CircularProgressIndicator());
-        } else if (snapshot.hasError) {
-          return const Center(
-              child: Text("Error: Please check your Internet connection"));
-        } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-          return const Center(child: Text("No movies found"));
-        }
-        final moviesList = snapshot.data as List<dynamic>;
-        moviesList.shuffle();
-        return Column(
+    return Column(
+      children: [
+        const Row(
           children: [
-            CarouselSlider(
-              items: moviesList.map(
-                (movie) {
-                  return Container(
-                    decoration: const BoxDecoration(
-                        borderRadius: BorderRadius.all(Radius.circular(12))),
-                    width: double.infinity,
-                    child: ClipRRect(
-                      borderRadius: const BorderRadius.all(Radius.circular(12)),
-                      child: Image.network(
-                        "$imagePath${movie.poster}",
-                        fit: BoxFit.fill,
-                      ),
+            SizedBox(width: 18),
+            Text(
+              "Trending Movies",
+              style: TextStyle(fontSize: 24),
+            ),
+          ],
+        ),
+        FutureBuilder(
+          future: MoviesService().getTrendingMovies(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(
+                  child: CircularProgressIndicator(color: Colors.white));
+            } else if (snapshot.hasError) {
+              return const Center(
+                  child: Text("Please check your Internet connection"));
+            } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+              return const Center(child: Text("No movies found"));
+            }
+            final moviesList = snapshot.data as List<dynamic>;
+            moviesList.shuffle();
+            return SizedBox(
+              height: 400,
+              width: double.infinity,
+              child: ListView.builder(
+                itemCount: 1,
+                itemBuilder: (context, index) {
+                  return CarouselSlider(
+                    items: moviesList.map(
+                      (movie) {
+                        return GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) {
+                                  return DetailsScreen(movie: movie);
+                                },
+                              ),
+                            );
+                          },
+                          child: Stack(
+                            children: [
+                              Positioned(
+                                child: ClipRRect(
+                                  borderRadius: const BorderRadius.all(
+                                      Radius.circular(12)),
+                                  child: Image.network(
+                                    "$imagePath${movie.poster}",
+                                    fit: BoxFit.fill,
+                                  ),
+                                ),
+                              ),
+                              Positioned(
+                                top: 20,
+                                right: 20,
+                                child: Column(
+                                  children: [
+                                    const Icon(Icons.star, color: Colors.amber),
+                                    Text(movie.vote.toStringAsFixed(2)),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        );
+                      },
+                    ).toList(),
+                    options: CarouselOptions(
+                      height: 350,
+                      autoPlay: true,
+                      viewportFraction: 0.55,
+                      pageSnapping: true,
+                      autoPlayCurve: Curves.fastOutSlowIn,
+                      enlargeCenterPage: true,
+                      autoPlayAnimationDuration: const Duration(seconds: 1),
                     ),
                   );
                 },
-              ).toList(),
-              options: CarouselOptions(
-                height: 250,
-                autoPlay: true,
-                viewportFraction: 0.70,
-                pageSnapping: true,
-                autoPlayCurve: Curves.fastOutSlowIn,
-                enlargeCenterPage: true,
-                autoPlayAnimationDuration: const Duration(seconds: 1),
               ),
-            ),
-          ],
-        );
-      },
+            );
+          },
+        ),
+      ],
     );
   }
 }

@@ -3,7 +3,7 @@ class MoviesModel {
   String poster;
   String releaseDate;
   String overview;
-  String vote;
+  double vote;
 
   MoviesModel({
     required this.title,
@@ -19,7 +19,7 @@ class MoviesModel {
       poster: json["poster_path"] ?? "Poster is NOT Available",
       releaseDate: json["release_date"] ?? "Release Date is NOT Available",
       overview: json["overview"] ?? "Overview is NOT Available",
-      vote: json["vote_average"].toString(),
+      vote: json["vote_average"].toDouble(),
     );
   }
 }
