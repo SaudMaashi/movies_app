@@ -22,6 +22,7 @@ class TrendingMovies extends StatelessWidget {
             ),
           ],
         ),
+        const SizedBox(height: 25),
         FutureBuilder(
           future: MoviesService().getTrendingMovies(),
           builder: (context, snapshot) {
@@ -37,9 +38,10 @@ class TrendingMovies extends StatelessWidget {
             final moviesList = snapshot.data as List<dynamic>;
             moviesList.shuffle();
             return SizedBox(
-              height: 400,
+              height: 350,
               width: double.infinity,
               child: ListView.builder(
+                physics: const ScrollPhysics(),
                 itemCount: 1,
                 itemBuilder: (context, index) {
                   return CarouselSlider(

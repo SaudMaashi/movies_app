@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:movies_app/constants/constants.dart';
+import 'package:movies_app/screens/details_screen.dart';
 
 class TopAndUpcomingMovies extends StatelessWidget {
   final Future<List<dynamic>>? future;
@@ -46,21 +47,50 @@ class TopAndUpcomingMovies extends StatelessWidget {
                 itemCount: moviesList.length,
                 scrollDirection: Axis.horizontal,
                 itemBuilder: (context, index) {
-                  return Row(
-                    children: [
-                      const SizedBox(width: 10),
-                      SizedBox(
-                        child: ClipRRect(
-                          borderRadius:
-                              const BorderRadius.all(Radius.circular(12)),
-                          child: Image.network(
-                            "$imagePath${moviesList[index].poster}",
-                            fit: BoxFit.fill,
+                  return Padding(
+                    padding: const EdgeInsets.all(10),
+                    child: Stack(
+                      children: [
+                        const SizedBox(width: 10),
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) {
+                                  return DetailsScreen(
+                                      movie: moviesList[index]);
+                                },
+                              ),
+                            );
+                          },
+                          child: SizedBox(
+                            child: ClipRRect(
+                              borderRadius:
+                                  const BorderRadius.all(Radius.circular(12)),
+                              child: Image.network(
+                                "$imagePath${moviesList[index].poster}",
+                                fit: BoxFit.fill,
+                              ),
+                            ),
                           ),
                         ),
-                      ),
-                      const SizedBox(width: 10),
-                    ],
+                        const SizedBox(width: 10),
+                        Positioned(
+                          right: 15,
+                          top: 15,
+                          child: Column(
+                            children: [
+                              const Icon(Icons.star, color: Colors.amber),
+                              Text(moviesList[index].vote.toStringAsFixed(2) ==
+                                      "0.00"
+                                  ? "Not rated yet"
+                                  : moviesList[index].vote.toStringAsFixed(2)),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
                   );
                 },
               ),

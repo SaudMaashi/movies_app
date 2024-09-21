@@ -14,66 +14,78 @@ class DetailsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-          body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            SizedBox(
-              height: 600,
-              child: Stack(
-                children: [
-                  Positioned(
-                    left: 0,
-                    right: 0,
-                    bottom: 0,
-                    top: 0,
-                    child: ClipRRect(
-                      borderRadius: const BorderRadius.only(
-                        bottomRight: Radius.circular(50),
-                        bottomLeft: Radius.circular(50),
-                      ),
-                      child: Image.network(
-                        "$imagePath${movie.poster}",
-                        fit: BoxFit.cover,
+        body: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              SizedBox(
+                height: 600,
+                child: Stack(
+                  children: [
+                    Positioned(
+                      left: 0,
+                      right: 0,
+                      bottom: 0,
+                      top: 0,
+                      child: ClipRRect(
+                        borderRadius: const BorderRadius.only(
+                          bottomRight: Radius.circular(50),
+                          bottomLeft: Radius.circular(50),
+                        ),
+                        child: Image.network(
+                          "$imagePath${movie.poster}",
+                          fit: BoxFit.cover,
+                        ),
                       ),
                     ),
-                  ),
-                  Positioned(
-                    child: Padding(
-                        padding: const EdgeInsets.all(24),
-                        child: Container(
-                          height: 50,
-                          width: 50,
-                          decoration: BoxDecoration(
-                              border:
-                                  Border.all(color: Colors.white, width: 0.7),
-                              color: const Color(0xFF303030),
-                              borderRadius: BorderRadius.circular(24)),
-                          child: IconButton(
-                              onPressed: () {
-                                Navigator.pop(context);
-                              },
-                              icon: const Icon(Icons.arrow_back)),
-                        )),
-                  ),
-                ],
+                    Positioned(
+                      left: 15,
+                      top: 15,
+                      height: 50,
+                      width: 50,
+                      child: Container(
+                        decoration: BoxDecoration(
+                            color: const Color(0xFF303030),
+                            borderRadius: BorderRadius.circular(24)),
+                        child: IconButton(
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                            icon: const Icon(Icons.arrow_back)),
+                      ),
+                    ),
+                  ],
+                ),
               ),
-            ),
-            const SizedBox(height: 25),
-            const Text(
-              "Overview",
-              textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 32),
-            ),
-            Padding(
-                padding: const EdgeInsets.all(24),
+              const SizedBox(height: 25),
+              const Text(
+                "Overview",
+                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: 32),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(25),
                 child: Text(
                   movie.overview,
                   style: const TextStyle(fontSize: 18),
-                )),
-          ],
+                ),
+              ),
+              const Text(
+                textAlign: TextAlign.center,
+                "Release Date",
+                style: TextStyle(fontSize: 32),
+              ),
+              const SizedBox(height: 25),
+              Text(
+                movie.releaseDate,
+                textAlign: TextAlign.center,
+                style: const TextStyle(fontSize: 18),
+              ),
+              const SizedBox(height: 25),
+            ],
+          ),
         ),
-      )),
+      ),
     );
   }
 }
