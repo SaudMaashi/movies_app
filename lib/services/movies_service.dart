@@ -6,11 +6,9 @@ class MoviesService {
   final dio = Dio();
   var trendingMovies = [];
   var allTrendingMovies = [];
-  var topMovies = [];
   var allTopMovies = [];
-  var upcomingMovies = [];
   var allUpcomingMovies = [];
-  var searchResults = [];
+  var trendingSearchResults = [];
   Future<List> getTrendingMovies() async {
     final response = await dio.get(
         "https://api.themoviedb.org/3/trending/movie/week?api_key=$apiKey");
@@ -25,7 +23,7 @@ class MoviesService {
   Future<List> getAllTrendingMovies() async {
     for (var i = 1; i < 100; i++) {
       final response = await dio.get(
-          "https://api.themoviedb.org/3/trending/movie/week?api_key=$apiKey&page=$i");
+          "https://api.themoviedb.org/3/trending/top_rated/week?api_key=$apiKey");
       final json = response.data["results"];
       for (var movie in json) {
         MoviesModel moviesModel = MoviesModel.fromJson(movie);
@@ -35,80 +33,42 @@ class MoviesService {
     return allTrendingMovies;
   }
 
-  Future<List> getTopRatedMovies() async {
-    final response = await dio
-        .get("https://api.themoviedb.org/3/movie/top_rated?api_key=$apiKey");
-    final json = response.data["results"];
-    for (var movie in json) {
-      MoviesModel moviesModel = MoviesModel.fromJson(movie);
-      topMovies.add(moviesModel);
-    }
-    return topMovies;
-  }
-
-  Future<List> getAllTopRatedMovies() async {
-    for (var i = 1; i <= 500; i++) {
+  Stream<List> getAllTopRatedMovies() async* {
+    for (var i = 1; i <= 2; i++) {
       final response = await dio.get(
-          " https://api.themoviedb.org/3/movie/top_rated?api_key=$apiKey&page=$i");
+          "https://api.themoviedb.org/3/movie/top_rated?api_key=$apiKey&page=$i");
       final json = response.data["results"];
       for (var movie in json) {
         MoviesModel moviesModel = MoviesModel.fromJson(movie);
         allTopMovies.add(moviesModel);
       }
+      yield allTopMovies;
     }
-    return allTopMovies;
   }
 
-  Future<List> getUpcomingMovies() async {
-    final response = await dio
-        .get("https://api.themoviedb.org/3/movie/upcoming?api_key=$apiKey");
-    final json = response.data["results"];
-    for (var movie in json) {
-      MoviesModel moviesModel = MoviesModel.fromJson(movie);
-      upcomingMovies.add(moviesModel);
-    }
-    return upcomingMovies;
-  }
-
-  Future<List> getAllUpcomingMovies() async {
-    for (var i = 1; i <= 500; i++) {
+  Stream<List> getAllUpcomingMovies() async* {
+    for (var i = 1; i <= 2; i++) {
       final response = await dio.get(
-          "https://api.themoviedb.org/3/movie/upcoming?api_key=$apiKey&page=2");
+          "https://api.themoviedb.org/3/movie/upcoming?api_key=$apiKey&page=$i");
       final json = response.data["results"];
       for (var movie in json) {
         MoviesModel moviesModel = MoviesModel.fromJson(movie);
         allUpcomingMovies.add(moviesModel);
       }
+      yield allUpcomingMovies;
     }
-    return allUpcomingMovies;
   }
 
-  Stream<List> stream(String movieName) async* {
+  Stream<List> searchAllMovies(String movieName) async* {
     for (var i = 1; i <= 500; i++) {
       final response = await dio.get(
           "https://api.themoviedb.org/3/search/movie?query=$movieName&api_key=$apiKey&page=$i");
       final json = response.data["results"];
       for (var movie in json) {
         MoviesModel moviesModel = MoviesModel.fromJson(movie);
-        searchResults.add(moviesModel);
+        trendingSearchResults.add(moviesModel);
       }
-      yield searchResults;
+      yield trendingSearchResults;
     }
-  }
-
-  Future<List> searchAllMovies(String movieName) async {
-    for (var i = 1; i <= 500; i++) {
-      final response = await dio.get(
-          "https://api.themoviedb.org/3/search/movie?query=$movieName&api_key=$apiKey&page=$i");
-      final json = response.data["results"];
-      for (var movie in json) {
-        MoviesModel moviesModel = MoviesModel.fromJson(movie);
-        searchResults.add(moviesModel);
-        Future.delayed(
-          const Duration(seconds: 2),
-        );
-      }
-    }
-    return searchResults;
   }
 }

@@ -22,11 +22,11 @@ class _HomeScreenState extends State<HomeScreen> {
               const TrendingMovies(),
               const SizedBox(height: 35),
               TopAndUpcomingMovies(
-                  future: MoviesService().getTopRatedMovies(),
+                  stream: MoviesService().getAllTopRatedMovies(),
                   text: "Top Rated Movies"),
               const SizedBox(height: 35),
               TopAndUpcomingMovies(
-                  future: MoviesService().getUpcomingMovies(),
+                  stream: MoviesService().getAllUpcomingMovies(),
                   text: "Upcoming Movies"),
               const SizedBox(height: 30),
             ],

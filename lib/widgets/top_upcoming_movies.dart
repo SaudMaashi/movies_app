@@ -1,16 +1,16 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:movies_app/constants/constants.dart';
-import 'package:movies_app/screens/all_movies.dart';
 import 'package:movies_app/screens/details_screen.dart';
 import 'package:movies_app/widgets/custom_loading_indicator.dart';
+import 'package:movies_app/widgets/custom_rating_widget.dart';
 
 class TopAndUpcomingMovies extends StatelessWidget {
-  final Future<List<dynamic>>? future;
+  final Stream<List<dynamic>>? stream;
   final String text;
   const TopAndUpcomingMovies({
     super.key,
-    required this.future,
+    required this.stream,
     required this.text,
   });
 
@@ -26,27 +26,11 @@ class TopAndUpcomingMovies extends StatelessWidget {
               text,
               style: const TextStyle(fontSize: 24),
             ),
-            const SizedBox(width: 85),
-            GestureDetector(
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) {
-                      return const AllMovies();
-                    },
-                  ),
-                );
-              },
-              child: const Text(
-                "View more",
-              ),
-            ),
           ],
         ),
         const SizedBox(height: 30),
-        FutureBuilder(
-          future: future,
+        StreamBuilder(
+          stream: stream,
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const CustomLoadingIndicator(itemCount: 3);
@@ -62,24 +46,23 @@ class TopAndUpcomingMovies extends StatelessWidget {
                 itemCount: moviesList.length,
                 scrollDirection: Axis.horizontal,
                 itemBuilder: (context, index) {
-                  return Padding(
-                    padding: const EdgeInsets.all(10),
-                    child: Stack(
-                      children: [
-                        const SizedBox(width: 10),
-                        GestureDetector(
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) {
-                                  return DetailsScreen(
-                                      movie: moviesList[index]);
-                                },
-                              ),
-                            );
+                  return GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) {
+                            return DetailsScreen(movie: moviesList[index]);
                           },
-                          child: SizedBox(
+                        ),
+                      );
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.all(10),
+                      child: Stack(
+                        children: [
+                          const SizedBox(width: 10),
+                          SizedBox(
                             child: ClipRRect(
                               borderRadius:
                                   const BorderRadius.all(Radius.circular(12)),
@@ -89,22 +72,10 @@ class TopAndUpcomingMovies extends StatelessWidget {
                               ),
                             ),
                           ),
-                        ),
-                        const SizedBox(width: 10),
-                        Positioned(
-                          right: 15,
-                          top: 15,
-                          child: Column(
-                            children: [
-                              const Icon(Icons.star, color: Colors.amber),
-                              Text(moviesList[index].vote.toStringAsFixed(2) ==
-                                      "0.00"
-                                  ? "Not rated yet"
-                                  : moviesList[index].vote.toStringAsFixed(2)),
-                            ],
-                          ),
-                        ),
-                      ],
+                          const SizedBox(width: 10),
+                          CustomRatingWidget(movie: moviesList[index]),
+                        ],
+                      ),
                     ),
                   );
                 },

@@ -38,21 +38,12 @@ class DetailsScreen extends StatelessWidget {
                         ),
                       ),
                     ),
-                    Positioned(
+                    const Positioned(
                       left: 15,
                       top: 15,
                       height: 50,
                       width: 50,
-                      child: Container(
-                        decoration: BoxDecoration(
-                            color: const Color(0xFF151218),
-                            borderRadius: BorderRadius.circular(24)),
-                        child: IconButton(
-                            onPressed: () {
-                              Navigator.pop(context);
-                            },
-                            icon: const Icon(Icons.arrow_back)),
-                      ),
+                      child: BackButton(),
                     ),
                   ],
                 ),
