@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:movies_app/constants/constants.dart';
 import 'package:movies_app/models/movies_model.dart';
@@ -32,9 +33,8 @@ class DetailsScreen extends StatelessWidget {
                           bottomRight: Radius.circular(50),
                           bottomLeft: Radius.circular(50),
                         ),
-                        child: Image.network(
-                          "$imagePath${movie.poster}",
-                          fit: BoxFit.cover,
+                        child: CachedNetworkImage(
+                          imageUrl: "$imagePath${movie.poster}",
                         ),
                       ),
                     ),
@@ -45,7 +45,7 @@ class DetailsScreen extends StatelessWidget {
                       width: 50,
                       child: Container(
                         decoration: BoxDecoration(
-                            color: const Color(0xFF303030),
+                            color: const Color(0xFF151218),
                             borderRadius: BorderRadius.circular(24)),
                         child: IconButton(
                             onPressed: () {
@@ -56,6 +56,17 @@ class DetailsScreen extends StatelessWidget {
                     ),
                   ],
                 ),
+              ),
+              const Text(
+                "Name",
+                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: 32),
+              ),
+              const SizedBox(height: 25),
+              Text(
+                textAlign: TextAlign.center,
+                movie.title,
+                style: const TextStyle(fontSize: 18),
               ),
               const SizedBox(height: 25),
               const Text(

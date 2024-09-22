@@ -1,8 +1,11 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:movies_app/constants/constants.dart';
+import 'package:movies_app/screens/all_movies.dart';
 import 'package:movies_app/screens/details_screen.dart';
 import 'package:movies_app/services/movies_service.dart';
+import 'package:movies_app/widgets/custom_loading_indicator.dart';
 
 class TrendingMovies extends StatelessWidget {
   const TrendingMovies({
@@ -13,12 +16,28 @@ class TrendingMovies extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        const Row(
+        Row(
           children: [
-            SizedBox(width: 18),
-            Text(
+            const SizedBox(width: 18),
+            const Text(
               "Trending Movies",
               style: TextStyle(fontSize: 24),
+            ),
+            const SizedBox(width: 100),
+            GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) {
+                      return const AllMovies();
+                    },
+                  ),
+                );
+              },
+              child: const Text(
+                "View more",
+              ),
             ),
           ],
         ),
@@ -27,8 +46,7 @@ class TrendingMovies extends StatelessWidget {
           future: MoviesService().getTrendingMovies(),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Center(
-                  child: CircularProgressIndicator(color: Colors.white));
+              return const CustomLoadingIndicator(itemCount: 3);
             } else if (snapshot.hasError) {
               return const Center(
                   child: Text("Please check your Internet connection"));
@@ -64,9 +82,8 @@ class TrendingMovies extends StatelessWidget {
                                 child: ClipRRect(
                                   borderRadius: const BorderRadius.all(
                                       Radius.circular(12)),
-                                  child: Image.network(
-                                    "$imagePath${movie.poster}",
-                                    fit: BoxFit.fill,
+                                  child: CachedNetworkImage(
+                                    imageUrl: "$imagePath${movie.poster}",
                                   ),
                                 ),
                               ),

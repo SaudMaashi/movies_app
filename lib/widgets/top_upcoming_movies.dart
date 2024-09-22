@@ -1,6 +1,9 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:movies_app/constants/constants.dart';
+import 'package:movies_app/screens/all_movies.dart';
 import 'package:movies_app/screens/details_screen.dart';
+import 'package:movies_app/widgets/custom_loading_indicator.dart';
 
 class TopAndUpcomingMovies extends StatelessWidget {
   final Future<List<dynamic>>? future;
@@ -18,10 +21,26 @@ class TopAndUpcomingMovies extends StatelessWidget {
       children: [
         Row(
           children: [
-            const SizedBox(width: 12),
+            const SizedBox(width: 18),
             Text(
               text,
               style: const TextStyle(fontSize: 24),
+            ),
+            const SizedBox(width: 85),
+            GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) {
+                      return const AllMovies();
+                    },
+                  ),
+                );
+              },
+              child: const Text(
+                "View more",
+              ),
             ),
           ],
         ),
@@ -30,11 +49,7 @@ class TopAndUpcomingMovies extends StatelessWidget {
           future: future,
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Center(
-                  child: CircularProgressIndicator(color: Colors.white));
-            } else if (snapshot.hasError) {
-              return const Center(
-                  child: Text("Please check your Internet connection"));
+              return const CustomLoadingIndicator(itemCount: 3);
             } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
               return const Center(child: Text("No movies found"));
             }
@@ -68,9 +83,9 @@ class TopAndUpcomingMovies extends StatelessWidget {
                             child: ClipRRect(
                               borderRadius:
                                   const BorderRadius.all(Radius.circular(12)),
-                              child: Image.network(
-                                "$imagePath${moviesList[index].poster}",
-                                fit: BoxFit.fill,
+                              child: CachedNetworkImage(
+                                imageUrl:
+                                    "$imagePath${moviesList[index].poster}",
                               ),
                             ),
                           ),

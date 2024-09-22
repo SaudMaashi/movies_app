@@ -13,7 +13,7 @@ class MoviesApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: const HomeScreen(),
-      theme: ThemeData.dark(useMaterial3: false),
+      theme: ThemeData.dark(),
     );
   }
 }

@@ -37,6 +37,9 @@ dependencies:
   cupertino_icons: ^1.0.8
   dio: ^5.7.0
   carousel_slider: ^5.0.0
+  cached_network_image: ^3.4.1
+  shimmer: ^3.0.0
+  anim_search_bar: ^2.0.3
 
 
 dev_dependencies:
